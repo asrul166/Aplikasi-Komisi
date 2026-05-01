@@ -1,0 +1,2 @@
+ID_Transaksi,Tanggal,Nama_Sales,Nama_Produk,Kategori_Produk,Qty,Harga_Satuan,Status_Transaksi,Catatan
+TRX001,2024-01-15,John Doe,Laptop Pro,Elektronik,2,15000000,Pending,First order

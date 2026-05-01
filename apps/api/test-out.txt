@@ -1,0 +1,132 @@
+=== AutoComm API Test Suite ===
+
+--- Health ---
+--- DB Seed ---
+  Workspace: e4081cd7-9c1f-4d75-9ebf-30baa00e8cc0
+--- Auth ---
+  User role set to admin, workspace assigned
+  Signed in: xU3j8z6eP07uHrGt34IwPk39Wi7Ufsou - cookie: YES
+  Session: admin@autocomm.test - role: undefined
+--- Workspace ---
+--- Dashboard ---
+  Summary: {"salesVolume":0,"earnedCommissions":0,"pendingPayouts":0}
+--- Transactions ---
+  Created TXN1: bf0599a1-7def-4846-a0e4-069ee4434c54
+  Created TXN2: 3c3398ed-3dbf-4ea3-98f8-c497ce0e403d
+  Listed: 2 of 2
+  Stats: vol=$275000 count=2
+  Updated: Acme Updated total=$250000.00
+--- Commissions ---
+  Rule: c8fffc7a-de35-43ce-9866-06eb08920c6f ACC-RULE-2026-47H4
+  Rules: 2
+  Tier1: $0-$100K @ 0.3%
+  Tier2: $100K-$500K @ 0.15%
+  Tier3: $500K+ @ 0.10%
+  Sim @$75K: flat=$1500 tier=$200 total=$1700
+  Sim @$250K: flat=$3000 tier=$150 total=$3150
+  Sim @$750K: flat=$6000 tier=$200 total=$6200
+--- Users ---
+  Users: 1
+  Stats: total=1 active=1 seats=100
+  Me: Test Admin / admin
+  Invited: b04e305f-6386-45a9-bc16-51b37a63d282
+--- Reporting ---
+  CSV Report: 0909bd08-0263-4794-b5b3-43d77a811275
+  PDF Report: 8eeec053-9433-4efb-a9ec-256abf8206a3
+  History: 2 reports
+  Schedule: 44ce2868-e62e-404d-b653-def6f5ac9be7
+  Schedules: 1
+--- CSV ---
+--- Audit ---
+  Logs: 20 total: 24
+    - Deleted Report Schedule (success)
+    - Updated Report Schedule (success)
+    - Created Report Schedule (success)
+    - Generated Report (success)
+    - Generated Report (success)
+--- AI ---
+  Chat: Good afternoon! Based on current trends, you are on track to
+--- Auth Protection (7 routes) ---
+--- Edge Cases ---
+--- Cleanup ---
+  Deleted rule
+  Deleted flat rule
+  Deleted TXN1
+  Deleted TXN2
+
+=======================================================
+  PASS  GET /health -> 200
+  PASS  POST /api/auth/sign-up/email -> 422 (user exists, OK)
+  PASS  POST /api/auth/sign-in/email -> 200
+  PASS  GET /api/auth/get-session -> 200
+  PASS  GET /api/workspaces/current -> 200
+  PASS  PUT /api/workspaces/current -> 200
+  PASS  PUT /api/workspaces/ai-config -> 200
+  PASS  GET /api/dashboard/summary -> 200
+  PASS  GET /api/dashboard/commission-progress -> 200
+  PASS  GET /api/dashboard/monthly-goal -> 200
+  PASS  GET /api/dashboard/recent-transactions -> 200
+  PASS  POST /api/transactions -> 201
+  PASS  POST /api/transactions -> 201
+  PASS  GET /api/transactions -> 200
+  PASS  GET /api/transactions/stats -> 200
+  PASS  GET /api/transactions/bf0599a1-7def-4846-a0e4-069ee4434c54 -> 200
+  PASS  PUT /api/transactions/bf0599a1-7def-4846-a0e4-069ee4434c54 -> 200
+  PASS  PATCH /api/transactions/bf0599a1-7def-4846-a0e4-069ee4434c54/status -> 200
+  PASS  GET /api/transactions -> 200
+  PASS  GET /api/transactions -> 200
+  PASS  POST /api/commissions/rules -> 201
+  PASS  POST /api/commissions/rules -> 201
+  PASS  GET /api/commissions/rules -> 200
+  PASS  GET /api/commissions/rules/c8fffc7a-de35-43ce-9866-06eb08920c6f -> 200
+  PASS  PUT /api/commissions/rules/c8fffc7a-de35-43ce-9866-06eb08920c6f -> 200
+  PASS  POST /api/commissions/rules/c8fffc7a-de35-43ce-9866-06eb08920c6f/tiers -> 201
+  PASS  POST /api/commissions/rules/c8fffc7a-de35-43ce-9866-06eb08920c6f/tiers -> 201
+  PASS  POST /api/commissions/rules/c8fffc7a-de35-43ce-9866-06eb08920c6f/tiers -> 201
+  PASS  PUT /api/commissions/tiers/11f7020f-cea6-453c-b4af-307f59a2570d -> 200
+  PASS  POST /api/commissions/calculate -> 200
+  PASS  POST /api/commissions/calculate -> 200
+  PASS  POST /api/commissions/calculate -> 200
+  PASS  DELETE /api/commissions/tiers/11f7020f-cea6-453c-b4af-307f59a2570d -> 204
+  PASS  GET /api/commissions/payouts -> 200
+  PASS  GET /api/users -> 200
+  PASS  GET /api/users/stats -> 200
+  PASS  GET /api/users/xU3j8z6eP07uHrGt34IwPk39Wi7Ufsou -> 200
+  PASS  POST /api/users/invite -> 201
+  PASS  PUT /api/users/b04e305f-6386-45a9-bc16-51b37a63d282 -> 200
+  PASS  PATCH /api/users/b04e305f-6386-45a9-bc16-51b37a63d282/role -> 200
+  PASS  PATCH /api/users/b04e305f-6386-45a9-bc16-51b37a63d282/status -> 200
+  PASS  PATCH /api/users/b04e305f-6386-45a9-bc16-51b37a63d282/status -> 200
+  PASS  POST /api/reports/generate -> 201
+  PASS  POST /api/reports/generate -> 201
+  PASS  GET /api/reports/history -> 200
+  PASS  GET /api/reports/download/0909bd08-0263-4794-b5b3-43d77a811275 -> 200
+  PASS  POST /api/reports/schedules -> 201
+  PASS  GET /api/reports/schedules -> 200
+  PASS  PUT /api/reports/schedules/44ce2868-e62e-404d-b653-def6f5ac9be7 -> 200
+  PASS  DELETE /api/reports/schedules/44ce2868-e62e-404d-b653-def6f5ac9be7 -> 204
+  PASS  GET /api/csv/template -> 200
+  PASS  GET /api/audit -> 200
+  PASS  GET /api/audit/eb004b48-5d1a-4bdc-af5b-d45070549c1a -> 200
+  PASS  POST /api/ai/chat -> 200
+  PASS  POST /api/ai/anomaly-detect -> 200
+  PASS  POST /api/ai/csv-mapping -> 200
+  PASS  GET /api/dashboard/summary -> 401
+  PASS  GET /api/transactions -> 401
+  PASS  POST /api/commissions/rules -> 401
+  PASS  GET /api/users -> 401
+  PASS  GET /api/audit -> 401
+  PASS  GET /api/csv/template -> 401
+  PASS  PUT /api/workspaces/current -> 401
+  PASS  GET /api/nonexistent -> 404
+  PASS  POST /api/transactions -> 400
+  PASS  DELETE /api/commissions/rules/c8fffc7a-de35-43ce-9866-06eb08920c6f -> 204
+  PASS  DELETE /api/commissions/rules/55168a50-ddae-40a4-ac31-f66e6f580d37 -> 204
+  PASS  DELETE /api/transactions/bf0599a1-7def-4846-a0e4-069ee4434c54 -> 204
+  PASS  DELETE /api/transactions/3c3398ed-3dbf-4ea3-98f8-c497ce0e403d -> 204
+=======================================================
+  PASSED: 69  |  FAILED: 0  |  TOTAL: 69
+
+  ALL TESTS PASSED!
+
+=======================================================
