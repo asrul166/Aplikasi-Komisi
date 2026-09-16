@@ -1,23 +1,23 @@
 const mockExecutions = [
-  { id: 'ORD-99102X', time: '10:45:12 AM', symbol: 'NVDA', side: 'BUY', qty: 1500, price: '$880.00', status: 'FILLED' },
-  { id: 'ORD-99103Y', time: '10:48:05 AM', symbol: 'TSLA', side: 'SELL', qty: 500, price: '$175.25', status: 'FILLED' },
-  { id: 'ORD-99104Z', time: '11:02:33 AM', symbol: 'AAPL', side: 'BUY', qty: 2000, price: '$185.90', status: 'PARTIAL' },
-  { id: 'ORD-99105A', time: '11:15:00 AM', symbol: 'MSFT', side: 'SELL', qty: 100, price: '$390.50', status: 'PENDING' },
-  { id: 'ORD-99106B', time: '11:30:21 AM', symbol: 'AMZN', side: 'BUY', qty: 850, price: '$178.10', status: 'FILLED' },
+    { id: 'ORD-99102X', time: '10:45:12 AM', symbol: 'NVDA', side: 'BUY', qty: 1500, price: '$880.00', status: 'FILLED' },
+    { id: 'ORD-99103Y', time: '10:48:05 AM', symbol: 'TSLA', side: 'SELL', qty: 500, price: '$175.25', status: 'FILLED' },
+    { id: 'ORD-99104Z', time: '11:02:33 AM', symbol: 'AAPL', side: 'BUY', qty: 2000, price: '$185.90', status: 'PARTIAL' },
+    { id: 'ORD-99105A', time: '11:15:00 AM', symbol: 'MSFT', side: 'SELL', qty: 100, price: '$390.50', status: 'PENDING' },
+    { id: 'ORD-99106B', time: '11:30:21 AM', symbol: 'AMZN', side: 'BUY', qty: 850, price: '$178.10', status: 'FILLED' },
 ];
 
 export default function Execution() {
-  return (
+    return (
     <div className="pt-24 px-8 pb-8 max-w-[1400px] mx-auto space-y-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-headline font-black text-on-surface">Order Execution</h2>
         <button className="bg-primary text-on-primary-fixed px-6 py-2 rounded-xl font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_4px_14px_0_rgba(155,168,255,0.39)]">
             <span className="material-symbols-outlined text-sm">add</span>
             New Order
         </button>
-      </div>
+    </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Quick Trade Form */}
         <div className="lg:col-span-1 bg-surface-container-low p-6 rounded-3xl h-fit border border-secondary/10 relative overflow-hidden">
