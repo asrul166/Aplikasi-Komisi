@@ -12,7 +12,7 @@ export default function Dashboard() {
             <h2 className="text-4xl font-headline font-black text-[#9ba8ff] tabular-nums">$1,284,500</h2>
             <div className="flex items-center gap-2 mt-4 text-emerald-400 text-xs font-bold">
               <span className="material-symbols-outlined text-sm">trending_up</span>
-              12.5% vs Last Month
+              13.4% vs Last Month
             </div>
           </div>
           
