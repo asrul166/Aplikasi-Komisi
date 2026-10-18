@@ -7,68 +7,66 @@ export default function AIAssistantOverlay({ isOpen, onClose }: AIAssistantOverl
   if (!isOpen) return null;
 
   return (
-    <aside className="fixed right-6 bottom-6 w-[380px] h-[580px] pb-6 bg-[#192540]/60 backdrop-blur-[20px] rounded-[2.5rem] border border-tertiary/20 shadow-2xl z-50 flex flex-col p-6 overflow-hidden md:flex">
-      <div className="flex items-center justify-between mb-4">
+    <aside aria-label="Asisten AutoComm" className="fixed inset-0 z-[70] flex h-[100dvh] w-full flex-col overflow-hidden border border-[#d0d6cc] bg-[#f3f4ef] p-4 text-[#18231d] shadow-xl md:inset-auto md:bottom-6 md:right-6 md:h-[min(580px,calc(100vh-3rem))] md:max-h-[580px] md:w-[380px] md:rounded-sm md:bg-[#fbfcf8] md:p-5">
+      <div className="mb-4 flex shrink-0 items-center justify-between border-b border-[#d0d6cc] pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-tertiary/20 flex items-center justify-center">
-            <span className="material-symbols-outlined text-tertiary">bolt</span>
+          <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-[#d9e6d8] text-[#176b52]">
+            <span className="material-symbols-outlined">auto_awesome</span>
           </div>
           <div>
-            <h4 className="font-bold text-on-surface">AutoComm AI</h4>
+            <h4 className="font-semibold text-[#18231d]">Asisten AutoComm</h4>
             <div className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              <span className="text-[10px] text-outline font-bold uppercase tracking-widest">Active Assistant</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#39835f]"></span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#536158]">Aktif</span>
             </div>
           </div>
         </div>
-        <button onClick={onClose} className="p-2 hover:bg-surface-container rounded-lg transition-colors">
-          <span className="material-symbols-outlined text-sm text-outline">close</span>
+        <button aria-label="Tutup asisten" onClick={onClose} className="flex h-9 w-9 items-center justify-center rounded-sm text-[#536158] transition-colors hover:bg-[#e9ece5] hover:text-[#18231d]">
+          <span className="material-symbols-outlined text-[20px]">close</span>
         </button>
       </div>
       
-      <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-hide">
-        {/* System Message */}
-        <div className="bg-surface-container-highest/40 p-4 rounded-2xl rounded-tl-none">
-          <p className="text-xs leading-relaxed text-on-surface">
-            Good afternoon, Alex. Based on current trends, you are on track to exceed your monthly goal by <span className="text-tertiary font-bold">12%</span>. Would you like me to analyze which leads have the highest conversion probability for your Elite Status qualification?
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
+        <div className="max-w-[92%] border border-[#d0d6cc] bg-white p-4">
+          <p className="text-sm leading-relaxed text-[#34443a]">
+            Selamat siang. Berdasarkan tren saat ini, pencapaian target komisi bulan ini berpotensi melampaui target sebesar <span className="font-semibold text-[#176b52]">12%</span>. Perlu saya rangkum prospek dengan peluang konversi tertinggi?
           </p>
         </div>
         
-        {/* User Message */}
-        <div className="bg-primary/20 p-4 rounded-2xl rounded-tr-none ml-8">
-          <p className="text-xs leading-relaxed text-primary">Yes, show me the top 3 prospects for this week.</p>
+        <div className="ml-auto max-w-[88%] border border-[#bfd3c3] bg-[#e5eee5] p-4">
+          <p className="text-sm leading-relaxed text-[#315744]">Tampilkan tiga prospek teratas minggu ini.</p>
         </div>
         
-        {/* System Response Card */}
-        <div className="bg-surface-container-highest/40 p-4 rounded-2xl rounded-tl-none space-y-3">
-          <p className="text-xs font-bold text-tertiary">Top Conversion Probabilities:</p>
+        <div className="max-w-[92%] border border-[#d0d6cc] bg-white p-4">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.08em] text-[#536158]">Peluang konversi</p>
           <div className="space-y-2">
-            <div className="flex justify-between items-center bg-black/20 p-2 rounded-xl">
-              <span className="text-[10px]">Quantum Leap LLC</span>
-              <span className="text-[10px] font-bold text-emerald-400">92%</span>
+            <div className="flex items-center justify-between gap-3 border-t border-[#e1e5dd] py-2">
+              <span className="text-xs text-[#34443a]">Quantum Leap LLC</span>
+              <span className="font-mono text-xs font-semibold text-[#176b52]">92%</span>
             </div>
-            <div className="flex justify-between items-center bg-black/20 p-2 rounded-xl">
-              <span className="text-[10px]">Stellar Logistics</span>
-              <span className="text-[10px] font-bold text-emerald-400">85%</span>
+            <div className="flex items-center justify-between gap-3 border-t border-[#e1e5dd] py-2">
+              <span className="text-xs text-[#34443a]">Stellar Logistics</span>
+              <span className="font-mono text-xs font-semibold text-[#176b52]">85%</span>
             </div>
-            <div className="flex justify-between items-center bg-black/20 p-2 rounded-xl">
-              <span className="text-[10px]">Horizon Venture</span>
-              <span className="text-[10px] font-bold text-primary">78%</span>
+            <div className="flex items-center justify-between gap-3 border-t border-[#e1e5dd] py-2">
+              <span className="text-xs text-[#34443a]">Horizon Venture</span>
+              <span className="font-mono text-xs font-semibold text-[#98641f]">78%</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="mt-4 relative">
+      <form className="relative mt-4 shrink-0 border-t border-[#d0d6cc] pt-4" onSubmit={(event) => event.preventDefault()}>
         <input 
-          className="w-full bg-surface-container border-none rounded-2xl py-4 pl-4 pr-12 text-xs focus:ring-1 focus:ring-tertiary transition-all outline-none text-on-surface" 
-          placeholder="Ask AI anything..." 
+          aria-label="Tulis pesan untuk asisten"
+          className="w-full rounded-sm border border-[#c8d0c7] bg-white py-3 pl-3 pr-12 text-sm text-[#18231d] placeholder:text-[#727c72] focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]"
+          placeholder="Tulis pesan..."
           type="text"
         />
-        <button className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-tertiary text-on-tertiary-container rounded-xl flex items-center justify-center hover:scale-105 transition-transform">
+        <button aria-label="Kirim pesan" className="absolute right-1 top-[calc(50%+0.5rem)] flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-sm bg-[#176b52] text-white transition-colors hover:bg-[#0f513f]">
           <span className="material-symbols-outlined">send</span>
         </button>
-      </div>
+      </form>
     </aside>
   )
 }

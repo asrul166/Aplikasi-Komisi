@@ -15,6 +15,12 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [activeTab, setActiveTab] = useState('transactions')
   const [isAIOpen, setIsAIOpen] = useState(false)
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab)
+    setIsMobileNavOpen(false)
+  }
 
   if (!isAuthenticated) {
     return <Login onLogin={() => setIsAuthenticated(true)} />
@@ -23,13 +29,18 @@ function App() {
   return (
     <>
       {/* SideNavBar Shell */}
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Sidebar
+        activeTab={activeTab}
+        isMobileOpen={isMobileNavOpen}
+        onClose={() => setIsMobileNavOpen(false)}
+        onTabChange={handleTabChange}
+      />
       
       {/* Main Canvas */}
-      <main className="md:ml-72 min-h-screen">
+      <main className="min-h-screen md:ml-64">
         <TopNavBar 
           activeTab={activeTab} 
-          onTabChange={setActiveTab} 
+          onToggleMobileNav={() => setIsMobileNavOpen((isOpen) => !isOpen)}
           onToggleAI={() => setIsAIOpen(!isAIOpen)} 
         />
         {activeTab === 'dashboard' && <Dashboard />}
@@ -43,9 +54,6 @@ function App() {
 
       <AIAssistantOverlay isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
 
-      {/* Background Decoration */}
-      <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] -z-10 pointer-events-none"></div>
-      <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
     </>
   )
 }

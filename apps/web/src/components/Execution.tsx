@@ -8,83 +8,82 @@ const mockExecutions = [
 
 export default function Execution() {
     return (
-    <div className="pt-24 px-8 pb-8 max-w-[1400px] mx-auto space-y-6">
-    <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-headline font-black text-on-surface">Order Execution</h2>
-        <button className="bg-primary text-on-primary-fixed px-6 py-2 rounded-xl font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-[0_4px_14px_0_rgba(155,168,255,0.39)]">
+    <div className="mx-auto max-w-screen-2xl space-y-6 px-5 pb-10 pt-24 sm:px-6 lg:px-8">
+    <div className="mb-6 flex flex-col justify-between gap-3 border-b border-[#d0d6cc] pb-5 sm:flex-row sm:items-end">
+        <h2 className="text-2xl font-bold text-[#18231d]">Eksekusi pesanan</h2>
+        <button className="flex items-center justify-center gap-2 self-start rounded-sm bg-[#176b52] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0f513f] sm:self-auto">
             <span className="material-symbols-outlined text-sm">add</span>
-            New Order
+            Pesanan baru
         </button>
     </div>
 
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(260px,360px)_minmax(0,1fr)] lg:gap-8">
         
         {/* Quick Trade Form */}
-        <div className="lg:col-span-1 bg-surface-container-low p-6 rounded-3xl h-fit border border-secondary/10 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10"></div>
-            <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">speed</span>
-                Quick Trade
+        <section className="h-fit border-y border-[#d0d6cc] py-5 lg:col-span-1 lg:border-y-0 lg:border-r lg:pr-6">
+            <h3 className="mb-6 flex items-center gap-2 text-base font-semibold text-[#18231d]">
+                <span className="material-symbols-outlined text-[#176b52]">speed</span>
+                Pesanan cepat
             </h3>
             <div className="space-y-4">
                 <div>
-                    <label className="text-[10px] text-outline font-bold uppercase tracking-widest pl-2">Symbol</label>
-                    <input type="text" className="w-full bg-surface-container-highest border-none rounded-xl p-3 text-sm text-on-surface focus:ring-1 focus:ring-primary outline-none mt-1" defaultValue="AAPL" />
+                    <label className="pl-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">Simbol</label>
+                    <input type="text" className="mt-1 w-full rounded-sm border border-[#c8d0c7] bg-white p-3 text-sm text-[#18231d] focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" defaultValue="AAPL" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                    <button className="bg-emerald-500/20 text-emerald-400 font-bold py-3 rounded-xl border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors">BUY</button>
-                    <button className="bg-surface-container-highest text-outline font-bold py-3 rounded-xl border border-outline-variant/30 hover:bg-error/20 hover:text-error hover:border-error/30 transition-colors">SELL</button>
+                    <button className="rounded-sm border border-[#bfd3c3] bg-[#e5eee5] py-3 font-semibold text-[#286b49] transition-colors hover:bg-[#d9e6d8]">BELI</button>
+                    <button className="rounded-sm border border-[#d0d6cc] bg-white py-3 font-semibold text-[#536158] transition-colors hover:border-[#a63d2d] hover:bg-[#f7d8d4] hover:text-[#a63d2d]">JUAL</button>
                 </div>
                 <div>
-                    <label className="text-[10px] text-outline font-bold uppercase tracking-widest pl-2">Quantity</label>
-                    <input type="number" className="w-full bg-surface-container-highest border-none rounded-xl p-3 text-sm text-on-surface focus:ring-1 focus:ring-primary outline-none mt-1" defaultValue={100} />
+                    <label className="pl-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">Kuantitas</label>
+                    <input type="number" className="mt-1 w-full rounded-sm border border-[#c8d0c7] bg-white p-3 text-sm text-[#18231d] focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" defaultValue={100} />
                 </div>
                 <div>
-                    <label className="text-[10px] text-outline font-bold uppercase tracking-widest pl-2">Order Type</label>
-                    <select className="w-full bg-surface-container-highest border-none rounded-xl p-3 text-sm text-on-surface focus:ring-1 focus:ring-primary outline-none mt-1">
-                        <option>Market</option>
-                        <option>Limit</option>
+                    <label className="pl-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">Jenis pesanan</label>
+                    <select className="mt-1 w-full rounded-sm border border-[#c8d0c7] bg-white p-3 text-sm text-[#18231d] focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]">
+                        <option>Pasar</option>
+                        <option>Batas</option>
                         <option>Stop</option>
                     </select>
                 </div>
-                <button className="w-full bg-primary text-on-primary-fixed py-4 rounded-xl font-bold mt-4 shadow-[0_4px_14px_0_rgba(155,168,255,0.39)] hover:shadow-[0_6px_20px_rgba(155,168,255,0.23)] hover:-translate-y-0.5 transition-all">Submit Order</button>
+                <button className="mt-4 w-full rounded-sm bg-[#176b52] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f513f]">Kirim pesanan</button>
             </div>
-        </div>
+        </section>
 
         {/* Executions Table */}
-        <div className="lg:col-span-2 bg-surface-container-low rounded-3xl overflow-hidden pb-4 border border-secondary/10">
-            <div className="p-6 flex justify-between items-center border-b border-outline-variant/10">
-                <h3 className="text-lg font-bold">Today's Executions</h3>
-                <span className="text-xs text-outline font-medium">Group Vol: 4.95K Shares</span>
+        <section className="min-w-0 overflow-hidden border-y border-[#d0d6cc] pb-4 lg:col-span-1">
+            <div className="flex flex-col justify-between gap-2 border-b border-[#d0d6cc] py-4 sm:flex-row sm:items-center">
+                <h3 className="text-base font-semibold text-[#18231d]">Pesanan hari ini</h3>
+                <span className="text-xs font-medium text-[#536158]">Total volume: 4,95 rb saham</span>
             </div>
             <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full min-w-[760px] border-collapse text-left">
                 <thead>
-                    <tr className="bg-black/20 text-outline text-[10px] uppercase tracking-widest font-bold">
-                    <th className="px-6 py-4">Time</th>
-                    <th className="px-6 py-4">Order ID</th>
-                    <th className="px-6 py-4">Symbol</th>
-                    <th className="px-6 py-4">Side</th>
-                    <th className="px-6 py-4 text-right">Qty</th>
-                    <th className="px-6 py-4 text-right">Price</th>
-                    <th className="px-6 py-4">Status</th>
+                    <tr className="border-b border-[#d0d6cc] text-[10px] font-semibold uppercase tracking-wider text-[#536158]">
+                    <th className="px-4 py-3">Waktu</th>
+                    <th className="px-4 py-3">ID pesanan</th>
+                    <th className="px-4 py-3">Simbol</th>
+                    <th className="px-4 py-3">Arah</th>
+                    <th className="px-4 py-3 text-right">Jumlah</th>
+                    <th className="px-4 py-3 text-right">Harga</th>
+                    <th className="px-4 py-3">Status</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant/10">
+                <tbody className="divide-y divide-[#e1e5dd]">
                     {mockExecutions.map((exec) => (
-                        <tr key={exec.id} className="hover:bg-surface-container-high transition-colors group">
-                            <td className="px-6 py-4 text-xs text-outline tabular-nums">{exec.time}</td>
-                            <td className="px-6 py-4 text-xs font-mono text-secondary">{exec.id}</td>
-                            <td className="px-6 py-4 font-bold text-sm text-on-surface">{exec.symbol}</td>
-                            <td className={`px-6 py-4 text-xs font-bold ${exec.side === 'BUY' ? 'text-emerald-400' : 'text-error'}`}>{exec.side}</td>
-                            <td className="px-6 py-4 text-right text-sm tabular-nums">{exec.qty}</td>
-                            <td className="px-6 py-4 text-right font-medium text-sm tabular-nums">{exec.price}</td>
-                            <td className="px-6 py-4">
-                                <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${
-                                    exec.status === 'FILLED' ? 'bg-emerald-500/10 text-emerald-400' : 
-                                    exec.status === 'PARTIAL' ? 'bg-secondary/10 text-secondary' : 'bg-outline-variant/20 text-outline'
+                        <tr key={exec.id} className="text-sm transition-colors hover:bg-white/70 group">
+                            <td className="whitespace-nowrap px-4 py-4 text-xs text-[#536158] tabular-nums">{exec.time}</td>
+                            <td className="whitespace-nowrap px-4 py-4 font-mono text-xs text-[#536158]">{exec.id}</td>
+                            <td className="px-4 py-4 font-semibold text-[#18231d]">{exec.symbol}</td>
+                            <td className={`px-4 py-4 text-xs font-semibold ${exec.side === 'BUY' ? 'text-[#286b49]' : 'text-[#a63d2d]'}`}>{exec.side === 'BUY' ? 'BELI' : 'JUAL'}</td>
+                            <td className="px-4 py-4 text-right tabular-nums">{exec.qty}</td>
+                            <td className="px-4 py-4 text-right font-mono text-xs tabular-nums">{exec.price}</td>
+                            <td className="whitespace-nowrap px-4 py-4">
+                                <span className={`text-xs font-medium ${
+                                    exec.status === 'FILLED' ? 'text-[#286b49]' : 
+                                    exec.status === 'PARTIAL' ? 'text-[#98641f]' : 'text-[#536158]'
                                 }`}>
-                                    {exec.status}
+                                    {exec.status === 'FILLED' ? 'Selesai' : exec.status === 'PARTIAL' ? 'Sebagian' : 'Menunggu'}
                                 </span>
                             </td>
                         </tr>
@@ -92,7 +91,7 @@ export default function Execution() {
                 </tbody>
                 </table>
             </div>
-        </div>
+        </section>
       </div>
     </div>
   );

@@ -6,46 +6,46 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState('profile');
 
   return (
-    <div className="pt-24 pb-20 px-8 max-w-[1400px] mx-auto space-y-6">
-      <header className="mb-8 mt-8 flex justify-between items-end">
+    <div className="mx-auto max-w-screen-2xl space-y-6 px-5 pb-12 pt-24 sm:px-6 lg:px-8">
+      <header className="mb-6 mt-2 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
-          <h1 className="text-4xl font-headline font-extrabold text-on-surface tracking-tight mb-2">
-            {activeTab === 'profile' ? 'Profile & Account' : 'Workspace Settings'}
+          <h1 className="mb-2 text-2xl font-bold text-[#18231d]">
+            {activeTab === 'profile' ? 'Profil dan akun' : 'Pengaturan ruang kerja'}
           </h1>
-          <p className="text-on-surface-variant font-light">
-            {activeTab === 'profile' ? 'Configure your personal identity and security protocols.' : 'Manage workspace configuration and team access.'}
+          <p className="text-sm text-[#536158]">
+            {activeTab === 'profile' ? 'Kelola identitas dan keamanan akun Anda.' : 'Kelola konfigurasi ruang kerja dan akses tim.'}
           </p>
         </div>
       </header>
       
-      <div className="flex gap-6 mb-8 border-b border-outline-variant/20">
+      <div className="mb-6 flex flex-wrap gap-x-4 border-b border-[#d0d6cc]">
         <button 
-          className={`pb-4 px-2 font-bold transition-all relative ${activeTab === 'profile' ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'}`}
+          className={`relative whitespace-nowrap px-1 pb-3 text-sm font-semibold transition-colors ${activeTab === 'profile' ? 'text-[#176b52]' : 'text-[#536158] hover:text-[#18231d]'}`}
           onClick={() => setActiveTab('profile')}
         >
-          Profile Overview
-          {activeTab === 'profile' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary shadow-[0_0_10px_rgba(155,168,255,0.5)]"></div>}
+          Profil
+          {activeTab === 'profile' && <div className="absolute bottom-0 left-0 h-0.5 w-full bg-[#176b52]"></div>}
         </button>
         <button 
-          className={`pb-4 px-2 font-bold transition-all relative ${activeTab === 'team' ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'}`}
+          className={`relative whitespace-nowrap px-1 pb-3 text-sm font-semibold transition-colors ${activeTab === 'team' ? 'text-[#176b52]' : 'text-[#536158] hover:text-[#18231d]'}`}
           onClick={() => setActiveTab('team')}
         >
-          Team & Access Management
-          {activeTab === 'team' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary shadow-[0_0_10px_rgba(155,168,255,0.5)]"></div>}
+          Tim dan akses
+          {activeTab === 'team' && <div className="absolute bottom-0 left-0 h-0.5 w-full bg-[#176b52]"></div>}
         </button>
         <button 
-          className={`pb-4 px-2 font-bold transition-all relative ${activeTab === 'commissions' ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'}`}
+          className={`relative whitespace-nowrap px-1 pb-3 text-sm font-semibold transition-colors ${activeTab === 'commissions' ? 'text-[#176b52]' : 'text-[#536158] hover:text-[#18231d]'}`}
           onClick={() => setActiveTab('commissions')}
         >
-          Commission Rules
-          {activeTab === 'commissions' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary shadow-[0_0_10px_rgba(155,168,255,0.5)]"></div>}
+          Aturan komisi
+          {activeTab === 'commissions' && <div className="absolute bottom-0 left-0 h-0.5 w-full bg-[#176b52]"></div>}
         </button>
         <button 
-          className={`pb-4 px-2 font-bold transition-all relative ${activeTab === 'integration' ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'}`}
+          className={`relative whitespace-nowrap px-1 pb-3 text-sm font-semibold transition-colors ${activeTab === 'integration' ? 'text-[#176b52]' : 'text-[#536158] hover:text-[#18231d]'}`}
           onClick={() => setActiveTab('integration')}
         >
-          AI Integration
-          {activeTab === 'integration' && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary shadow-[0_0_10px_rgba(155,168,255,0.5)]"></div>}
+          Integrasi
+          {activeTab === 'integration' && <div className="absolute bottom-0 left-0 h-0.5 w-full bg-[#176b52]"></div>}
         </button>
       </div>
       
@@ -54,41 +54,41 @@ export default function Settings() {
       )}
 
       {activeTab === 'profile' && (
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* Section 1: Profile & Account */}
-        <section className="col-span-12 lg:col-span-8 space-y-8">
-          <div className="glass-panel p-8 rounded-3xl">
-            <div className="flex items-start justify-between mb-8">
-              <div className="flex items-center gap-6">
+        <section className="col-span-1 space-y-8 lg:col-span-8">
+          <div className="border-y border-[#d0d6cc] bg-transparent p-5 sm:p-6">
+            <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+              <div className="flex min-w-0 items-center gap-4 sm:gap-6">
                 <div className="relative group">
-                  <div className="h-24 w-24 rounded-3xl overflow-hidden border-2 border-primary/30 group-hover:border-primary transition-all cursor-pointer">
+                  <div className="h-16 w-16 cursor-pointer overflow-hidden rounded-sm border border-[#c8d0c7] transition-colors group-hover:border-[#176b52] sm:h-20 sm:w-20">
                     <img className="w-full h-full object-cover" data-alt="Portrait of professional user in deep blue suit, sharp lighting, editorial style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzBbgcP3A5bmPUXYdelN0JVFtE-L2xA8EeEAkf5D_CAeAPllEljJrvKymQN2EPR8OGREilpZQIqBK6jShLYElbY-9ArV3TBcQt0cSK45dxpyEXy3xSI74JxXrwCEQZq1HCyxIQbr0Naw7rG3ghyKMmmyI0TbtZoDNQH0wu38iaqUoazK8tUkSUYuQ7bmaHjl0UhqD4ePAI_HWw611QBbY8cSfC-s0Ayq8rSYHcXsAMZhaaihR3IJZ2zIJZ9nRW8Rp9pAivWv0MewuE"/>
                   </div>
-                  <div className="absolute -bottom-2 -right-2 h-8 w-8 bg-primary rounded-full flex items-center justify-center text-on-primary cursor-pointer shadow-lg active:scale-90 transition-transform">
+                  <div className="absolute -bottom-2 -right-2 flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm bg-[#176b52] text-white transition-transform active:scale-90">
                     <span className="material-symbols-outlined text-sm" data-icon="edit">edit</span>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-headline font-bold text-on-surface">Alex Strathmore</h3>
-                  <p className="text-on-surface-variant text-sm">Head of Revenue Operations</p>
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-[#18231d]">Alex Strathmore</h3>
+                  <p className="text-sm text-[#536158]">Kepala Operasional Pendapatan</p>
                 </div>
               </div>
-              <button className="px-6 py-2 bg-surface-container-high text-primary text-sm font-bold rounded-full border border-primary/20 hover:bg-primary hover:text-on-primary transition-all">Save Changes</button>
+              <button className="rounded-sm border border-[#176b52] px-4 py-2 text-sm font-semibold text-[#176b52] transition-colors hover:bg-[#176b52] hover:text-white">Simpan perubahan</button>
             </div>
             
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-primary tracking-widest uppercase ml-1">Full Name</label>
-                <input className="w-full bg-surface-variant/30 border-none border-b-2 border-outline-variant/30 px-1 py-3 focus:border-primary transition-all text-on-surface font-headline focus:ring-0 focus:outline-none" type="text" defaultValue="Alex Strathmore"/>
+                <label className="ml-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">Nama lengkap</label>
+                <input className="w-full rounded-sm border border-[#c8d0c7] bg-white px-3 py-3 text-sm text-[#18231d] focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" type="text" defaultValue="Alex Strathmore"/>
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-primary tracking-widest uppercase ml-1">Email Address</label>
-                <input className="w-full bg-surface-variant/30 border-none border-b-2 border-outline-variant/30 px-1 py-3 focus:border-primary transition-all text-on-surface font-headline focus:ring-0 focus:outline-none" type="email" defaultValue="alex@autocomm.ai"/>
+                <label className="ml-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">Alamat email</label>
+                <input className="w-full rounded-sm border border-[#c8d0c7] bg-white px-3 py-3 text-sm text-[#18231d] focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" type="email" defaultValue="alex@autocomm.ai"/>
               </div>
             </div>
             
             <div className="mt-12 pt-8 border-t border-outline-variant/10">
-              <h4 className="text-sm font-bold text-on-surface mb-6 font-headline">Security & Notifications</h4>
+              <h4 className="mb-6 text-sm font-semibold text-[#18231d]">Keamanan dan notifikasi</h4>
               <div className="space-y-6">
                 <div className="flex items-center justify-between group">
                   <div className="flex items-center gap-4">
@@ -96,8 +96,8 @@ export default function Settings() {
                       <span className="material-symbols-outlined" data-icon="lock">lock</span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Two-Factor Authentication</p>
-                      <p className="text-xs text-on-surface-variant">Secure your account with biometric validation</p>
+                      <p className="text-sm font-medium text-[#18231d]">Autentikasi dua faktor</p>
+                      <p className="text-xs text-[#536158]">Lindungi akun dengan verifikasi biometrik</p>
                     </div>
                   </div>
                   <div className="w-12 h-6 bg-secondary/40 rounded-full relative cursor-pointer">
@@ -111,8 +111,8 @@ export default function Settings() {
                       <span className="material-symbols-outlined" data-icon="mail">mail</span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Daily Commission Summaries</p>
-                      <p className="text-xs text-on-surface-variant">Receive automated audit trails every 24h</p>
+                      <p className="text-sm font-medium text-[#18231d]">Ringkasan komisi harian</p>
+                      <p className="text-xs text-[#536158]">Terima rekap otomatis setiap 24 jam</p>
                     </div>
                   </div>
                   <div className="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
@@ -125,27 +125,27 @@ export default function Settings() {
         </section>
         
         {/* Section 2: User Management (Floating Action Card) */}
-        <section className="col-span-12 lg:col-span-4 space-y-6">
-          <div className="glass-panel p-6 rounded-3xl border-tertiary/20">
+        <section className="col-span-1 space-y-6 lg:col-span-4">
+          <div className="border-y border-[#d0d6cc] bg-transparent py-5 lg:px-5">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-headline font-bold text-lg">Quick Add User</h3>
+              <h3 className="text-base font-semibold text-[#18231d]">Tambah pengguna</h3>
               <span className="material-symbols-outlined text-tertiary" data-icon="person_add">person_add</span>
             </div>
             <div className="space-y-4">
-              <input className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-tertiary focus:outline-none transition-all" placeholder="Full Name" type="text"/>
-              <input className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-tertiary focus:outline-none transition-all" placeholder="Work Email" type="email"/>
-              <select className="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-tertiary focus:outline-none transition-all text-on-surface-variant" defaultValue="Sales Executive">
+              <input className="w-full rounded-sm border border-[#c8d0c7] bg-white px-3 py-3 text-sm focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" placeholder="Nama lengkap" type="text"/>
+              <input className="w-full rounded-sm border border-[#c8d0c7] bg-white px-3 py-3 text-sm focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" placeholder="Email kerja" type="email"/>
+              <select className="w-full rounded-sm border border-[#c8d0c7] bg-white px-3 py-3 text-sm focus:border-[#176b52] focus:outline-none focus:ring-1 focus:ring-[#176b52]" defaultValue="Sales Executive">
                 <option value="Admin">Admin</option>
                 <option value="Manager">Manager</option>
                 <option value="Sales Executive">Sales Executive</option>
               </select>
-              <button className="w-full py-3 bg-gradient-to-r from-tertiary to-tertiary-dim text-on-tertiary-fixed font-bold rounded-xl active:scale-95 transition-transform shadow-lg shadow-tertiary/10">Deploy Invite</button>
+              <button className="w-full rounded-sm bg-[#176b52] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f513f]">Kirim undangan</button>
             </div>
           </div>
           
-          <div className="bg-surface-container-low p-6 rounded-3xl space-y-4">
+          <div className="space-y-4 border-y border-[#d0d6cc] py-5 lg:px-5">
             <div className="flex items-center justify-between">
-              <p className="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase">Current Team</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#536158]">Tim saat ini</p>
               <span className="text-xs font-bold text-tertiary">42 / 50</span>
             </div>
             <div className="space-y-3">
@@ -177,10 +177,10 @@ export default function Settings() {
       )}
 
       {activeTab === 'commissions' && (
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* Section 3: Commission Setup (Bento Style) */}
-        <section className="col-span-12 grid grid-cols-12 gap-8">
-          <div className="col-span-12 md:col-span-4 glass-panel p-8 rounded-3xl flex flex-col justify-between">
+        <section className="col-span-1 grid grid-cols-1 gap-8 lg:col-span-12 lg:grid-cols-12">
+          <div className="col-span-1 flex flex-col justify-between border-y border-[#d0d6cc] bg-transparent p-5 lg:col-span-4 sm:p-6">
             <div>
               <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6">
                 <span className="material-symbols-outlined" data-icon="percent">percent</span>
@@ -195,7 +195,7 @@ export default function Settings() {
             </div>
           </div>
           
-          <div className="col-span-12 md:col-span-8 bg-surface-container p-8 rounded-3xl">
+          <div className="col-span-1 border-y border-[#d0d6cc] bg-transparent p-5 lg:col-span-8 sm:p-6">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-xl font-headline font-bold">Tiered Logic Tables</h3>
               <button className="flex items-center gap-2 text-xs font-bold text-secondary">
@@ -236,9 +236,9 @@ export default function Settings() {
       )}
 
       {activeTab === 'integration' && (
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* Section 4 & 5: Data & Reports */}
-        <section className="col-span-12 lg:col-span-7 bg-[#091328] p-8 rounded-3xl border border-outline-variant/10">
+        <section className="col-span-1 border-y border-[#d0d6cc] bg-transparent p-5 lg:col-span-7 sm:p-6">
           <div className="flex items-center gap-4 mb-8">
             <span className="material-symbols-outlined text-secondary" data-icon="cloud_upload">cloud_upload</span>
             <h3 className="text-xl font-headline font-bold">AI-Assisted Data Mapping</h3>
@@ -274,8 +274,8 @@ export default function Settings() {
           </div>
         </section>
         
-        <section className="col-span-12 lg:col-span-5 space-y-6">
-          <div className="glass-panel p-8 rounded-3xl">
+        <section className="col-span-1 space-y-6 lg:col-span-5">
+          <div className="border-y border-[#d0d6cc] bg-transparent p-5 sm:p-6">
             <h3 className="text-xl font-headline font-bold mb-6">Automated Reports</h3>
             <div className="space-y-6">
               <div className="space-y-2">
@@ -304,30 +304,29 @@ export default function Settings() {
           </div>
           
           {/* Section 6: AI Integration */}
-          <div className="relative overflow-hidden bg-gradient-to-br from-surface-container-highest to-[#060e20] p-8 rounded-3xl border border-tertiary/20 shadow-2xl">
-            <div className="absolute -right-12 -top-12 h-40 w-40 bg-tertiary/5 rounded-full blur-3xl"></div>
+          <div className="border-y border-[#d0d6cc] bg-[#e9ece5] p-5 sm:p-6">
             <div className="flex items-center justify-between mb-8 relative z-10">
-              <h3 className="text-xl font-headline font-extrabold text-tertiary">Anti Gravity AI</h3>
-              <div className="h-2 w-2 bg-tertiary rounded-full animate-pulse shadow-[0_0_10px_#81ecff]"></div>
+              <h3 className="text-base font-semibold text-[#18231d]">Integrasi asisten</h3>
+              <div className="h-2 w-2 rounded-full bg-[#39835f]"></div>
             </div>
             <div className="space-y-6 relative z-10">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-tertiary tracking-widest uppercase">Integration Endpoint</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-[#536158]">Endpoint integrasi</label>
                 <div className="flex gap-2">
-                  <input className="flex-1 bg-[#000000]/50 border-none rounded-xl py-3 px-4 text-sm text-tertiary font-mono focus:outline-none" type="password" defaultValue="••••••••••••••••"/>
+                  <input className="min-w-0 flex-1 rounded-sm border border-[#c8d0c7] bg-white px-3 py-3 font-mono text-sm text-[#536158] focus:outline-none" type="password" defaultValue="••••••••••••••••"/>
                   <button className="h-11 w-11 bg-surface-container-high rounded-xl flex items-center justify-center text-on-surface-variant border border-outline-variant/20"><span className="material-symbols-outlined" data-icon="visibility">visibility</span></button>
                 </div>
               </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-bold text-tertiary tracking-widest uppercase">Anomaly Detection Sensitivity</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-[#536158]">Kepekaan deteksi anomali</label>
                   <span className="text-xs font-black text-tertiary tabular-nums">0.84</span>
                 </div>
                 <div className="relative h-2 w-full bg-surface-container rounded-full">
                   <div className="absolute h-full w-[84%] bg-gradient-to-r from-tertiary-dim to-tertiary rounded-full shadow-[0_0_15px_#81ecff50]"></div>
                   <div className="absolute h-5 w-5 bg-on-surface rounded-full shadow-xl border-4 border-tertiary -top-1.5 left-[84%] -translate-x-1/2 cursor-pointer active:scale-125 transition-transform"></div>
                 </div>
-                <p className="text-[10px] text-on-surface-variant italic leading-snug">Higher sensitivity increases preventative flagging for tiered commission deviations.</p>
+                <p className="text-xs leading-snug text-[#536158]">Kepekaan lebih tinggi akan menandai lebih banyak penyimpangan komisi bertingkat.</p>
               </div>
             </div>
           </div>
@@ -337,13 +336,13 @@ export default function Settings() {
       
       {/* Floating Action for Success Feedback */}
       {showNotification && (
-        <div className="fixed bottom-8 right-8 flex items-center gap-4 bg-surface-container-highest/80 backdrop-blur-xl border border-tertiary/30 px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-10 z-50">
-          <div className="h-10 w-10 bg-tertiary/20 rounded-xl flex items-center justify-center text-tertiary">
+        <div className="fixed bottom-4 left-4 right-4 z-30 flex items-center gap-3 border border-[#d0d6cc] bg-[#fbfcf8] px-4 py-3 shadow-lg sm:left-auto sm:right-8 sm:w-auto">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-[#d9e6d8] text-[#176b52]">
             <span className="material-symbols-outlined" data-icon="auto_awesome" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
           </div>
           <div>
-            <p className="text-sm font-bold text-on-surface">Configuration Synced</p>
-            <p className="text-xs text-on-surface-variant">Global workspace parameters are active.</p>
+            <p className="text-sm font-semibold text-[#18231d]">Pengaturan tersinkron</p>
+            <p className="text-xs text-[#536158]">Konfigurasi ruang kerja telah diperbarui.</p>
           </div>
           <button className="ml-4 text-on-surface-variant hover:text-on-surface" onClick={() => setShowNotification(false)}>
             <span className="material-symbols-outlined" data-icon="close">close</span>

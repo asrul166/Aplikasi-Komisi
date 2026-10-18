@@ -1,36 +1,36 @@
 export default function Reporting() {
     return (
-        <div className="pt-28 p-8 space-y-10 max-w-7xl mx-auto pb-12 w-full">
+        <div className="mx-auto w-full max-w-screen-2xl space-y-7 px-5 pb-12 pt-24 sm:px-6 lg:px-8">
             {/* Page Header */}
-            <section className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <section className="flex flex-col justify-between gap-4 border-b border-[#d0d6cc] pb-5 md:flex-row md:items-end">
                 <div>
-                    <h1 className="text-4xl font-extrabold font-headline tracking-tight text-on-surface mb-2">Reports & Distribution</h1>
-                    <p className="text-on-surface-variant max-w-lg">Preview, export, and automate your financial reporting infrastructure with neural-grade precision.</p>
+                    <h1 className="mb-2 text-2xl font-bold text-[#18231d]">Laporan dan distribusi</h1>
+                    <p className="max-w-xl text-sm text-[#536158]">Tinjau, ekspor, dan jadwalkan laporan keuangan untuk tim Anda.</p>
                 </div>
-                <div className="flex gap-3">
-                    <button className="glass-effect px-5 py-2.5 rounded-xl text-sm font-semibold text-primary flex items-center gap-2 hover:bg-[#192540] transition-all">
+                <div className="flex flex-wrap gap-2">
+                    <button className="flex items-center gap-2 rounded-sm border border-[#c8d0c7] bg-white px-4 py-2.5 text-sm font-medium text-[#315744] transition-colors hover:bg-[#fbfcf8]">
                         <span className="material-symbols-outlined text-sm">refresh</span>
-                        Re-sync Data
+                        Perbarui data
                     </button>
-                    <button className="bg-primary text-on-primary-container px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 hover:scale-[1.02] active:scale-95 transition-all">
+                    <button className="flex items-center gap-2 rounded-sm bg-[#176b52] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0f513f]">
                         <span className="material-symbols-outlined text-sm">cloud_download</span>
-                        Instant Export
+                        Ekspor laporan
                     </button>
                 </div>
             </section>
 
             {/* Report Preview Cards */}
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <section className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
                 {/* Card 1 */}
-                <div className="bg-surface-container-low rounded-[1.5rem] p-6 group hover:translate-y-[-4px] transition-transform">
+                <div className="group border-b border-[#d0d6cc] py-5">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[#d9e6d8] text-[#176b52]">
                             <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>monitoring</span>
                         </div>
                         <span className="text-xs font-medium text-tertiary px-2 py-1 rounded bg-tertiary/10">+12.4%</span>
                     </div>
-                    <h3 className="text-lg font-bold text-on-surface mb-1">Monthly Payout Summary</h3>
-                    <p className="text-sm text-outline-variant mb-6">Aggregated distribution metrics for Oct 2023.</p>
+                    <h3 className="mb-1 text-base font-semibold text-[#18231d]">Ringkasan komisi bulanan</h3>
+                    <p className="mb-6 text-sm text-[#536158]">Rekapitulasi distribusi komisi untuk Oktober 2023.</p>
                     <div className="h-24 flex items-end gap-1.5">
                         <div className="flex-1 bg-primary/20 rounded-t-sm h-[40%] group-hover:bg-primary/40 transition-colors"></div>
                         <div className="flex-1 bg-primary/20 rounded-t-sm h-[60%] group-hover:bg-primary/40 transition-colors"></div>
@@ -42,15 +42,15 @@ export default function Reporting() {
                 </div>
 
                 {/* Card 2 */}
-                <div className="bg-surface-container-low rounded-[1.5rem] p-6 group hover:translate-y-[-4px] transition-transform">
+                <div className="group border-b border-[#d0d6cc] py-5">
                     <div className="flex justify-between items-start mb-4">
-                        <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[#f4e2b8] text-[#80601d]">
                             <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>public</span>
                         </div>
                         <span className="text-xs font-medium text-outline-variant px-2 py-1 rounded bg-outline-variant/10">Stable</span>
                     </div>
-                    <h3 className="text-lg font-bold text-on-surface mb-1">Regional Sales Performance</h3>
-                    <p className="text-sm text-outline-variant mb-6">Global revenue split by operational node.</p>
+                    <h3 className="mb-1 text-base font-semibold text-[#18231d]">Kinerja penjualan wilayah</h3>
+                    <p className="mb-6 text-sm text-[#536158]">Kontribusi pendapatan berdasarkan wilayah operasional.</p>
                     <div className="space-y-3">
                         <div className="flex items-center gap-3">
                             <div className="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
@@ -68,22 +68,22 @@ export default function Reporting() {
                 </div>
 
                 {/* Card 3 */}
-                <div className="bg-surface-container-low rounded-[1.5rem] p-6 group hover:translate-y-[-4px] transition-transform border border-dashed border-outline-variant/30 flex flex-col items-center justify-center text-center">
-                    <div className="w-14 h-14 rounded-full bg-surface-variant flex items-center justify-center mb-4 group-hover:bg-surface-container transition-colors">
-                        <span className="material-symbols-outlined text-outline">add_chart</span>
+                <div className="group flex flex-col items-center justify-center border border-dashed border-[#c8d0c7] p-6 text-center">
+                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-sm bg-[#e9ece5]">
+                        <span className="material-symbols-outlined text-[#536158]">add_chart</span>
                     </div>
-                    <h3 className="text-on-surface font-bold">New Custom Insight</h3>
-                    <p className="text-sm text-outline-variant mt-1">Design a new automated metric report</p>
+                    <h3 className="font-semibold text-[#18231d]">Buat analisis baru</h3>
+                    <p className="mt-1 text-sm text-[#536158]">Rancang metrik laporan otomatis</p>
                 </div>
             </section>
 
             {/* Distribution & Export Panel */}
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Export Center */}
-                <div className="lg:col-span-5 bg-surface-container rounded-[1.5rem] p-8 flex flex-col shadow-xl">
-                    <h2 className="text-xl font-bold font-headline mb-6 flex items-center gap-3">
-                        <span className="material-symbols-outlined text-primary">ios_share</span>
-                        Export Center
+                <div className="flex flex-col border-y border-[#d0d6cc] bg-transparent p-5 sm:p-6 lg:col-span-5">
+                    <h2 className="mb-6 flex items-center gap-3 text-lg font-semibold text-[#18231d]">
+                        <span className="material-symbols-outlined text-[#176b52]">ios_share</span>
+                        Ekspor laporan
                     </h2>
                     <div className="space-y-6 flex-1 flex flex-col">
                         <div className="space-y-3">
@@ -122,18 +122,18 @@ export default function Reporting() {
                 </div>
 
                 {/* Automated Distribution */}
-                <div className="lg:col-span-7 bg-surface-container rounded-[1.5rem] p-8 glass-effect shadow-xl flex flex-col">
+                <div className="flex flex-col border-y border-[#d0d6cc] bg-transparent p-5 sm:p-6 lg:col-span-7">
                     <div className="flex justify-between items-start mb-8">
                         <div>
-                            <h2 className="text-xl font-bold font-headline flex items-center gap-3">
+                            <h2 className="flex items-center gap-3 text-lg font-semibold text-[#18231d]">
                                 <span className="material-symbols-outlined text-secondary">schedule_send</span>
-                                Automated Distribution
+                                Distribusi otomatis
                             </h2>
-                            <p className="text-sm text-outline-variant mt-1">Schedule recurring deliveries to stakeholders.</p>
+                            <p className="mt-1 text-sm text-[#536158]">Jadwalkan pengiriman laporan berkala kepada tim terkait.</p>
                         </div>
                         <div className="flex items-center gap-2 bg-surface-container-lowest px-3 py-1.5 rounded-full">
                             <span className="w-2 h-2 bg-tertiary rounded-full animate-pulse"></span>
-                            <span className="text-[10px] font-bold text-tertiary uppercase">Active</span>
+                            <span className="text-[10px] font-semibold uppercase text-[#176b52]">Aktif</span>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
@@ -187,9 +187,9 @@ export default function Reporting() {
             </section>
 
             {/* Export History Table */}
-            <section className="bg-surface-container rounded-[2rem] overflow-hidden">
+            <section className="overflow-hidden border-y border-[#d0d6cc] bg-transparent">
                 <div className="px-8 py-6 flex justify-between items-center bg-surface-container-lowest">
-                    <h2 className="text-lg font-bold font-headline">Export History</h2>
+                    <h2 className="text-base font-semibold text-[#18231d]">Riwayat ekspor</h2>
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2 text-xs text-outline font-medium">
                             <span className="w-2 h-2 rounded-full bg-tertiary"></span> 148 Generated
@@ -276,27 +276,6 @@ export default function Reporting() {
                 </div>
             </section>
 
-            {/* Floating AI Chat Element */}
-            <div className="fixed bottom-8 right-8 w-80 glass-effect rounded-2xl shadow-2xl p-4 animate-float z-50">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
-                        <span className="text-xs font-bold uppercase tracking-widest text-tertiary">AI Assistant</span>
-                    </div>
-                    <button className="text-slate-400 hover:text-white">
-                        <span className="material-symbols-outlined text-sm">close</span>
-                    </button>
-                </div>
-                <div className="bg-surface-variant/40 rounded-xl p-3 mb-4">
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                        "I've updated the distribution automation for the <span className="text-white font-bold">Q4 Audit</span> report. Would you like to review the scheduled recipients?"
-                    </p>
-                </div>
-                <div className="flex gap-2">
-                    <button className="flex-1 py-2 rounded-lg bg-surface-container-highest text-xs font-bold hover:bg-surface-bright transition-colors">Review</button>
-                    <button className="flex-1 py-2 rounded-lg border border-tertiary/20 text-tertiary text-xs font-bold hover:bg-tertiary/10 transition-colors">Dismiss</button>
-                </div>
-            </div>            
         </div>
     )
 }

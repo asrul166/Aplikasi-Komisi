@@ -8,66 +8,65 @@ const mockMarketData = [
 
 export default function MarketData() {
   return (
-    <div className="pt-24 px-8 pb-8 max-w-[1400px] mx-auto space-y-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-headline font-black text-on-surface">Market Data</h2>
+    <div className="mx-auto max-w-screen-2xl space-y-6 px-5 pb-10 pt-24 sm:px-6 lg:px-8">
+      <div className="mb-6 flex flex-col justify-between gap-3 border-b border-[#d0d6cc] pb-5 sm:flex-row sm:items-end">
+        <h2 className="text-2xl font-bold text-[#18231d]">Data pasar</h2>
         <div className="flex gap-2">
-            <span className="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Markets Open
+            <span className="flex items-center gap-2 border border-[#bfd3c3] bg-[#e5eee5] px-3 py-1.5 text-xs font-semibold text-[#286b49]">
+                <span className="h-2 w-2 rounded-full bg-[#39835f]"></span>
+                Pasar dibuka
             </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-surface-container-low p-5 rounded-2xl border border-secondary/10 hover:bg-surface-container transition-colors">
-            <p className="text-outline text-xs font-bold uppercase tracking-wider mb-1">S&P 500</p>
-            <h3 className="text-2xl font-bold text-on-surface">5,123.41</h3>
-            <p className="text-emerald-400 text-xs font-bold mt-1">+0.82%</p>
+        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="border-b border-[#d0d6cc] bg-transparent px-2 py-4">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">S&P 500</p>
+          <h3 className="font-mono text-xl font-semibold tabular-nums text-[#18231d]">5,123.41</h3>
+          <p className="mt-1 text-xs font-semibold text-[#286b49]">+0.82%</p>
         </div>
-        <div className="bg-surface-container-low p-5 rounded-2xl border border-secondary/10 hover:bg-surface-container transition-colors">
-            <p className="text-outline text-xs font-bold uppercase tracking-wider mb-1">NASDAQ</p>
-            <h3 className="text-2xl font-bold text-on-surface">16,248.52</h3>
-            <p className="text-emerald-400 text-xs font-bold mt-1">+1.14%</p>
+        <div className="border-b border-[#d0d6cc] bg-transparent px-2 py-4">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">NASDAQ</p>
+          <h3 className="font-mono text-xl font-semibold tabular-nums text-[#18231d]">16,248.52</h3>
+          <p className="mt-1 text-xs font-semibold text-[#286b49]">+1.14%</p>
         </div>
-        <div className="bg-surface-container-low p-5 rounded-2xl border border-secondary/10 hover:bg-surface-container transition-colors">
-            <p className="text-outline text-xs font-bold uppercase tracking-wider mb-1">DOW JONES</p>
-            <h3 className="text-2xl font-bold text-on-surface">38,905.66</h3>
-            <p className="text-error text-xs font-bold mt-1">-0.12%</p>
+        <div className="border-b border-[#d0d6cc] bg-transparent px-2 py-4">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">DOW JONES</p>
+          <h3 className="font-mono text-xl font-semibold tabular-nums text-[#18231d]">38,905.66</h3>
+          <p className="mt-1 text-xs font-semibold text-[#a63d2d]">-0.12%</p>
         </div>
-        <div className="bg-surface-container-low p-5 rounded-2xl border border-secondary/10 hover:bg-surface-container transition-colors">
-            <p className="text-outline text-xs font-bold uppercase tracking-wider mb-1">VIX</p>
-            <h3 className="text-2xl font-bold text-on-surface">13.24</h3>
-            <p className="text-error text-xs font-bold mt-1">-4.05%</p>
+        <div className="border-b border-[#d0d6cc] bg-transparent px-2 py-4">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#536158]">VIX</p>
+          <h3 className="font-mono text-xl font-semibold tabular-nums text-[#18231d]">13.24</h3>
+          <p className="mt-1 text-xs font-semibold text-[#a63d2d]">-4.05%</p>
         </div>
       </div>
 
-      <section className="bg-surface-container-low rounded-3xl overflow-hidden pb-4 relative group border border-secondary/10">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10 group-hover:bg-primary/10 transition-colors duration-700"></div>
-        <div className="p-8 flex justify-between items-center z-10 relative">
-            <h3 className="text-xl font-headline font-bold">Watchlist Equities</h3>
+        <section className="min-w-0 overflow-hidden border-y border-[#d0d6cc] pb-4">
+        <div className="relative z-10 flex items-center justify-between py-5">
+          <h3 className="text-base font-semibold text-[#18231d]">Daftar pantauan saham</h3>
         </div>
         <div className="overflow-x-auto relative z-10">
-            <table className="w-full text-left border-collapse">
+          <table className="w-full min-w-[640px] border-collapse text-left">
             <thead>
-                <tr className="bg-black/20 text-outline text-[10px] uppercase tracking-widest font-bold">
-                <th className="px-8 py-4">Symbol</th>
-                <th className="px-8 py-4">Company Name</th>
-                <th className="px-8 py-4 text-right">Last Price</th>
-                <th className="px-8 py-4 text-right">Change %</th>
-                <th className="px-8 py-4 text-right">Volume</th>
+            <tr className="border-b border-[#d0d6cc] text-[10px] font-semibold uppercase tracking-wider text-[#536158]">
+            <th className="px-4 py-3">Simbol</th>
+            <th className="px-4 py-3">Nama perusahaan</th>
+            <th className="px-4 py-3 text-right">Harga terakhir</th>
+            <th className="px-4 py-3 text-right">Perubahan</th>
+            <th className="px-4 py-3 text-right">Volume</th>
                 </tr>
             </thead>
-            <tbody className="divide-y divide-outline-variant/10">
+          <tbody className="divide-y divide-[#e1e5dd]">
                 {mockMarketData.map((item) => (
-                    <tr key={item.symbol} className="hover:bg-surface-container-high transition-colors group">
-                        <td className="px-8 py-6 font-bold text-sm text-primary">{item.symbol}</td>
-                        <td className="px-8 py-6 font-medium text-sm text-on-surface">{item.name}</td>
-                        <td className="px-8 py-6 text-right font-medium text-sm tabular-nums">${item.price}</td>
-                        <td className={`px-8 py-6 text-right font-bold text-sm tabular-nums ${item.changeType === 'positive' ? 'text-emerald-400' : 'text-error'}`}>
+              <tr key={item.symbol} className="text-sm transition-colors hover:bg-white/70">
+                <td className="whitespace-nowrap px-4 py-4 font-mono text-xs font-semibold text-[#176b52]">{item.symbol}</td>
+                <td className="whitespace-nowrap px-4 py-4 font-medium text-[#18231d]">{item.name}</td>
+                <td className="whitespace-nowrap px-4 py-4 text-right font-mono text-xs tabular-nums text-[#18231d]">${item.price}</td>
+                <td className={`whitespace-nowrap px-4 py-4 text-right text-xs font-semibold tabular-nums ${item.changeType === 'positive' ? 'text-[#286b49]' : 'text-[#a63d2d]'}`}>
                             {item.change}
                         </td>
-                        <td className="px-8 py-6 text-right text-sm text-outline tabular-nums">{item.volume}</td>
+                <td className="whitespace-nowrap px-4 py-4 text-right font-mono text-xs tabular-nums text-[#536158]">{item.volume}</td>
                     </tr>
                 ))}
             </tbody>
