@@ -1,147 +1,123 @@
+/**
+ * Demo data. Run `npm run db:seed` on an empty database,
+ * or `npm run db:seed -- --reset` to wipe all data first.
+ */
+import 'dotenv/config';
+import { count, sql } from 'drizzle-orm';
 import { db } from './db/index.js';
-import { user } from './db/schema/auth.js';
-import { workspaces } from './db/schema/workspace.js';
-import { products } from './db/schema/product.js';
-import { transactions } from './db/schema/transaction.js';
-import crypto from 'node:crypto';
+import { user, workspaces } from './db/schema/index.js';
+import { currentMonth, monthRange, toDateString } from './lib/period.js';
+import { commissionService } from './services/commission.service.js';
+import { dashboardService } from './services/dashboard.service.js';
+import { transactionService, type TxStatus } from './services/transaction.service.js';
+import { userService } from './services/user.service.js';
+
+const PASSWORD = process.env.SEED_PASSWORD ?? 'Komisia123!';
+
+const people = [
+  { name: 'Ayu Lestari', email: 'admin@komisia.test', role: 'admin', jobTitle: 'Finance' },
+  { name: 'Budi Santoso', email: 'manager@komisia.test', role: 'manager', jobTitle: 'Supervisor Sales' },
+  { name: 'Citra Dewi', email: 'sales@komisia.test', role: 'sales', jobTitle: 'Sales Executive' },
+  { name: 'Dimas Pratama', email: 'dimas@komisia.test', role: 'sales', jobTitle: 'Sales Executive' },
+  { name: 'Eka Putri', email: 'eka@komisia.test', role: 'sales', jobTitle: 'Sales Representative' },
+] as const;
+
+const catalog = [
+  { productName: 'Laptop Kantor', productCategory: 'Elektronik', unitPrice: 12_500_000 },
+  { productName: 'Printer Laser', productCategory: 'Elektronik', unitPrice: 3_750_000 },
+  { productName: 'Lisensi Software', productCategory: 'Software', unitPrice: 4_800_000 },
+  { productName: 'Paket Instalasi Jaringan', productCategory: 'Jasa', unitPrice: 18_000_000 },
+  { productName: 'Kursi Ergonomis', productCategory: 'Furnitur', unitPrice: 2_150_000 },
+];
+
+const customers = [
+  'PT Sumber Pangan',
+  'CV Karya Utama',
+  'PT Bumi Sejahtera',
+  'Toko Makmur Jaya',
+  'PT Lintas Niaga',
+  'CV Sinar Abadi',
+  'PT Cahaya Nusantara',
+  'Koperasi Mitra Usaha',
+];
 
 async function seed() {
-  console.log('Seeding database...');
-  try {
-    // 1. Create a Workspaces
-    const [workspace1] = await db
-      .insert(workspaces)
-      .values({
-        id: crypto.randomUUID(),
-        name: 'Acme Corp',
-        maxSeats: 100,
-        anomalySensitivity: '0.85',
-      })
-      .returning();
-
-    console.log('Workspace created:', workspace1.name);
-
-    // 2. Create Users
-    const [adminUser] = await db
-      .insert(user)
-      .values({
-        id: crypto.randomUUID(),
-        name: 'Admin User',
-        email: 'admin@acme.corp',
-        role: 'admin',
-        jobTitle: 'Global Sales Director',
-        workspaceId: workspace1.id,
-      })
-      .returning();
-      
-    const [salesUser] = await db
-      .insert(user)
-      .values({
-        id: crypto.randomUUID(),
-        name: 'Alice Agent',
-        email: 'alice@acme.corp',
-        role: 'sales',
-        jobTitle: 'Account Executive',
-        workspaceId: workspace1.id,
-      })
-      .returning();
-
-    console.log('Users created');
-
-    // 3. Create Products
-    const [product1] = await db
-      .insert(products)
-      .values({
-        id: crypto.randomUUID(),
-        workspaceId: workspace1.id,
-        name: 'Enterprise Software License',
-        category: 'Software',
-        unitPrice: '5000.00',
-      })
-      .returning();
-      
-    const [product2] = await db
-      .insert(products)
-      .values({
-        id: crypto.randomUUID(),
-        workspaceId: workspace1.id,
-        name: 'Premium Support Package',
-        category: 'Service',
-        unitPrice: '1200.00',
-      })
-      .returning();
-
-    console.log('Products created');
-
-    // 4. Create Transactions
-    const dummyTransactions = [
-      {
-        transactionCode: 'TXN-882194',
-        workspaceId: workspace1.id,
-        salesAgentId: salesUser.id,
-        productId: product1.id,
-        customerName: 'Global Nexus Corp',
-        date: new Date('2023-10-24').toISOString(),
-        quantity: 8,
-        unitPrice: '5000.00',
-        totalSales: '40000.00',
-        commissionPercent: '0.05',
-        commissionAmount: '2000.00',
-        status: 'success' as const,
-      },
-      {
-        transactionCode: 'TXN-882155',
-        workspaceId: workspace1.id,
-        salesAgentId: adminUser.id,
-        productId: product2.id,
-        customerName: 'Apex Systems',
-        date: new Date('2023-10-23').toISOString(),
-        quantity: 10,
-        unitPrice: '1200.00',
-        totalSales: '12000.00',
-        commissionPercent: '0.03',
-        commissionAmount: '360.00',
-        status: 'pending' as const,
-      },
-      {
-        transactionCode: 'TXN-882101',
-        workspaceId: workspace1.id,
-        salesAgentId: salesUser.id,
-        productId: product1.id,
-        customerName: 'Terra Industries',
-        date: new Date('2023-10-22').toISOString(),
-        quantity: 19,
-        unitPrice: '5000.00',
-        totalSales: '95000.00',
-        commissionPercent: '0.07',
-        commissionAmount: '6650.00',
-        status: 'success' as const,
-      },
-      {
-        transactionCode: 'TXN-882088',
-        workspaceId: workspace1.id,
-        salesAgentId: salesUser.id,
-        productId: product2.id,
-        customerName: 'Kinetico Ltd.',
-        date: new Date('2023-10-21').toISOString(),
-        quantity: 4,
-        unitPrice: '1200.00',
-        totalSales: '4800.00',
-        commissionPercent: '0.02',
-        commissionAmount: '96.00',
-        status: 'pending' as const,
-      }
-    ];
-
-    await db.insert(transactions).values(dummyTransactions);
-    
-    console.log('Transactions created');
-    console.log('Seeding completed successfully!');
-    process.exit(0);
-  } catch (error) {
-    console.error('Seeding failed:', error);
-    process.exit(1);
+  if (process.argv.includes('--reset')) {
+    await db.execute(sql`TRUNCATE TABLE workspaces, "user", verification CASCADE`);
   }
+  const [existing] = await db.select({ count: count() }).from(user);
+  if (existing.count > 0) {
+    console.log('Database sudah berisi data. Gunakan --reset untuk mengisi ulang.');
+    return;
+  }
+
+  const [workspace] = await db.insert(workspaces).values({ name: 'PT Maju Bersama' }).returning();
+
+  const ids: string[] = [];
+  for (const person of people) {
+    ids.push(await userService.create({ ...person, password: PASSWORD }, workspace.id));
+  }
+  const agentIds = ids.slice(2);
+
+  const rule = await commissionService.createRule(
+    {
+      name: 'Skema Reguler',
+      description: 'Komisi dasar 3% ditambah bonus sesuai total penjualan bulanan.',
+      type: 'tiered',
+      flatRate: 0.03,
+      tiers: [
+        { minVolume: 100_000_000, commissionRate: 0.01 },
+        { minVolume: 250_000_000, commissionRate: 0.02 },
+      ],
+    },
+    workspace.id,
+    ids[0]
+  );
+  await commissionService.activateRule(rule.id, workspace.id);
+
+  const now = new Date();
+  const previous = toDateString(new Date(now.getFullYear(), now.getMonth() - 1, 1)).slice(0, 7);
+  let sequence = 1000;
+
+  for (const month of [previous, currentMonth()]) {
+    const isCurrent = month === currentMonth();
+    const lastDay = isCurrent ? now.getDate() : monthRange(month).days;
+    const total = 36;
+
+    for (let i = 0; i < total; i++) {
+      // Deterministic spread so every run produces the same demo data.
+      const product = catalog[(i * 7) % catalog.length];
+      const day = 1 + Math.floor((i * lastDay) / total);
+      let status: TxStatus = i % 11 === 5 ? 'cancelled' : 'success';
+      // Leave some of the latest sales waiting for approval.
+      if (isCurrent && i >= total - 14 && i % 2 === 0) status = 'pending';
+
+      await transactionService.create(
+        {
+          ...product,
+          transactionCode: `TRX-${++sequence}`,
+          customerName: customers[(i * 3) % customers.length],
+          date: `${month}-${String(day).padStart(2, '0')}`,
+          salesAgentId: agentIds[i % agentIds.length],
+          quantity: 1 + ((i * 5) % 4),
+        },
+        workspace.id,
+        status
+      );
+    }
+
+    for (const [index, agentId] of agentIds.entries()) {
+      await dashboardService.setGoal(workspace.id, agentId, month, 300_000_000 - index * 50_000_000);
+    }
+  }
+
+  console.log(`Selesai. Akun demo (password: ${PASSWORD}):`);
+  for (const p of people) console.log(`  ${p.role.padEnd(8)} ${p.email}`);
 }
 
-seed();
+seed()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error('Seed gagal:', err);
+    process.exit(1);
+  });

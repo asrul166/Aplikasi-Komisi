@@ -1,27 +1,16 @@
 export class AppError extends Error {
   public readonly statusCode: number;
-  public readonly isOperational: boolean;
 
-  constructor(message: string, statusCode: number, isOperational = true) {
+  constructor(message: string, statusCode: number) {
     super(message);
     this.statusCode = statusCode;
-    this.isOperational = isOperational;
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
 export class NotFoundError extends AppError {
-  constructor(resource: string, id?: string) {
-    super(
-      id ? `${resource} with id '${id}' not found` : `${resource} not found`,
-      404
-    );
-  }
-}
-
-export class ForbiddenError extends AppError {
-  constructor(message = 'You do not have permission to perform this action') {
-    super(message, 403);
+  constructor(resource: string) {
+    super(`${resource} tidak ditemukan`, 404);
   }
 }
 
@@ -35,4 +24,10 @@ export class BadRequestError extends AppError {
   constructor(message: string) {
     super(message, 400);
   }
+}
+
+/** Drizzle wraps driver errors, so the Postgres code can sit on `cause`. */
+export function pgErrorCode(err: unknown): string | undefined {
+  const e = err as { code?: string; cause?: { code?: string } } | null;
+  return e?.cause?.code ?? e?.code;
 }

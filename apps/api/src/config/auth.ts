@@ -19,6 +19,9 @@ export const auth = betterAuth({
   trustedOrigins: [env.CORS_ORIGIN],
   emailAndPassword: {
     enabled: true,
+    // Accounts are only created by an admin (or the seed script).
+    disableSignUp: true,
+    minPasswordLength: 8,
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days

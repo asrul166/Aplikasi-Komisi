@@ -1,139 +1,84 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { requireAuth, type AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/rbac.middleware.js';
 import { validate } from '../middleware/validate.middleware.js';
 import { auditLog } from '../middleware/audit.middleware.js';
 import { transactionService } from '../services/transaction.service.js';
 import { paginationSchema } from '../lib/pagination.js';
-import { z } from 'zod';
+import { dateSchema, transactionSchema } from '../lib/schemas.js';
 
 const router = Router();
+router.use(requireAuth);
 
-router.use(requireAuth as any);
-
-// ── Validation Schemas ─────────────────────────────────────────
-
-const createSchema = z.object({
-  transactionCode: z.string().min(1),
-  customerName: z.string().min(1),
-  date: z.string(),
-  quantity: z.number().int().positive(),
-  unitPrice: z.number().positive(),
-  productId: z.string().uuid().optional(),
-  salesAgentId: z.string().uuid().optional(),
-  status: z.enum(['pending', 'success', 'failed', 'cancelled']).optional(),
-  notes: z.string().optional(),
-});
-
-const listQuerySchema = paginationSchema.extend({
-  status: z.string().optional(),
+const statusSchema = z.enum(['pending', 'success', 'cancelled']);
+const listSchema = paginationSchema.extend({
+  status: statusSchema.optional(),
   salesAgentId: z.string().optional(),
-  dateFrom: z.string().optional(),
-  dateTo: z.string().optional(),
-  search: z.string().optional(),
+  dateFrom: dateSchema.optional(),
+  dateTo: dateSchema.optional(),
+  search: z.string().max(100).optional(),
 });
 
-// ── Routes ─────────────────────────────────────────────────────
+/** Sales users are always limited to their own records. */
+const ownScope = (req: AuthenticatedRequest) =>
+  req.user!.role === 'sales' ? req.user!.id : undefined;
 
-router.get('/', validate({ query: listQuerySchema }) as any, async (req: AuthenticatedRequest, res) => {
-  try {
-    const query = (req as any).validatedQuery;
-    const filters = {
-      workspaceId: req.user!.workspaceId!,
-      status: query.status,
-      salesAgentId:
-        req.user!.role === 'sales' ? req.user!.id : query.salesAgentId,
-      dateFrom: query.dateFrom,
-      dateTo: query.dateTo,
-      search: query.search,
-    };
-    const data = await transactionService.list(filters, query);
-    res.json(data);
-  } catch (err: any) {
-    res.status(err.statusCode ?? 500).json({ error: err.message });
-  }
-});
-
-router.get('/stats', async (req: AuthenticatedRequest, res) => {
-  try {
-    const data = await transactionService.getStats(req.user!.workspaceId!);
-    res.json(data);
-  } catch (err: any) {
-    res.status(err.statusCode ?? 500).json({ error: err.message });
-  }
+router.get('/', validate({ query: listSchema }), async (req: AuthenticatedRequest, res) => {
+  const query = (req as any).validatedQuery as z.infer<typeof listSchema>;
+  const salesAgentId = ownScope(req) ?? query.salesAgentId;
+  res.json(
+    await transactionService.list(
+      { ...query, workspaceId: req.user!.workspaceId, salesAgentId },
+      query
+    )
+  );
 });
 
 router.get('/:id', async (req: AuthenticatedRequest, res) => {
-  try {
-    const id = req.params.id as string;
-    const data = await transactionService.getById(id);
-    res.json(data);
-  } catch (err: any) {
-    res.status(err.statusCode ?? 500).json({ error: err.message });
-  }
+  const id = String(req.params.id);
+  res.json(await transactionService.getById(id, req.user!.workspaceId, ownScope(req)));
 });
 
 router.post(
   '/',
-  requireRole('admin', 'manager') as any,
-  validate({ body: createSchema }) as any,
-  auditLog('Created Transaction', (req) => req.body.transactionCode) as any,
+  requireRole('admin', 'manager'),
+  validate({ body: transactionSchema }),
+  auditLog('Created Transaction', (req) => req.body.transactionCode || req.body.customerName),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await transactionService.create({
-        ...req.body,
-        workspaceId: req.user!.workspaceId!,
-        salesAgentId: req.body.salesAgentId ?? req.user!.id,
-      });
-      res.status(201).json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    res.status(201).json(await transactionService.create(req.body, req.user!.workspaceId));
   }
 );
 
 router.put(
   '/:id',
-  requireRole('admin', 'manager') as any,
-  auditLog('Updated Transaction', (req) => req.params.id as string) as any,
+  requireRole('admin', 'manager'),
+  validate({ body: transactionSchema }),
+  auditLog('Updated Transaction'),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const id = req.params.id as string;
-      const data = await transactionService.update(id, req.body);
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    const id = String(req.params.id);
+    res.json(await transactionService.update(id, req.body, req.user!.workspaceId));
   }
 );
 
 router.patch(
   '/:id/status',
-  requireRole('admin', 'manager') as any,
-  auditLog('Updated Transaction Status', (req) => req.params.id as string) as any,
+  requireRole('admin', 'manager'),
+  validate({ body: z.object({ status: statusSchema }) }),
+  auditLog('Updated Transaction Status'),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const id = req.params.id as string;
-      const data = await transactionService.updateStatus(id, req.body.status);
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    const id = String(req.params.id);
+    res.json(await transactionService.updateStatus(id, req.body.status, req.user!.workspaceId));
   }
 );
 
 router.delete(
   '/:id',
-  requireRole('admin') as any,
-  auditLog('Deleted Transaction', (req) => req.params.id as string) as any,
+  requireRole('admin'),
+  auditLog('Deleted Transaction'),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const id = req.params.id as string;
-      await transactionService.delete(id);
-      res.status(204).send();
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    await transactionService.delete(String(req.params.id), req.user!.workspaceId);
+    res.status(204).send();
   }
 );
 

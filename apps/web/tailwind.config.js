@@ -1,81 +1,26 @@
+import forms from '@tailwindcss/forms'
+
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx}",
-    ],
-    darkMode: "class",
-    theme: {
-        extend: {
-            colors: {
-                primary: "#176b52",
-                secondary: "#a84626",
-                "surface-container-highest": "#c8d0c7",
-                "outline-variant": "#d0d6cc",
-                "on-tertiary-container": "#563f11",
-                "inverse-surface": "#202a23",
-                "background": "#f3f4ef",
-                "secondary-dim": "#a84626",
-                "on-primary": "#ffffff",
-                "surface-container-lowest": "#ffffff",
-                "surface-container-low": "#fbfcf8",
-                "inverse-on-surface": "#e7ebe4",
-                "on-tertiary": "#ffffff",
-                "surface": "#f3f4ef",
-                "inverse-primary": "#9dd8bf",
-                "on-tertiary-fixed-variant": "#563f11",
-                "on-surface": "#18231d",
-                "error-container": "#f7d8d4",
-                "surface-dim": "#e4e8e0",
-                "tertiary-fixed": "#f4e2b8",
-                "on-primary-container": "#134f3c",
-                "surface-container-high": "#d5dbd1",
-                "on-tertiary-fixed": "#302207",
-                "secondary-fixed-dim": "#edb49f",
-                "surface-variant": "#e1e5dd",
-                "surface-tint": "#176b52",
-                "outline": "#727c72",
-                "on-primary-fixed-variant": "#134f3c",
-                "secondary-fixed": "#ffdbce",
-                "on-error": "#ffffff",
-                "secondary-container": "#f7d5c8",
-                "on-error-container": "#722719",
-                "on-surface-variant": "#536158",
-                "on-secondary-fixed-variant": "#7c321b",
-                "on-secondary": "#ffffff",
-                "tertiary-dim": "#80601d",
-                "tertiary-fixed-dim": "#e4ca8c",
-                "on-primary-fixed": "#092c20",
-                "tertiary": "#b58b3a",
-                "primary-dim": "#0f513f",
-                "surface-container": "#e9ece5",
-                "error": "#a63d2d",
-                "on-secondary-fixed": "#401707",
-                "primary-fixed-dim": "#9dd8bf",
-                "tertiary-container": "#f4e2b8",
-                "on-secondary-container": "#7c321b",
-                "on-background": "#18231d",
-                "primary-fixed": "#bcebd3",
-                "error-dim": "#842f22",
-                "surface-bright": "#ffffff",
-                "primary-container": "#d6eee1"
-            },
-            borderRadius: {
-                DEFAULT: "0.25rem",
-                lg: "0.5rem",
-                xl: "0.75rem",
-                full: "9999px"
-            },
-            fontFamily: {
-                headline: ["DM Sans", "sans-serif"],
-                body: ["DM Sans", "sans-serif"],
-                label: ["DM Sans", "sans-serif"],
-                mono: ["IBM Plex Mono", "monospace"]
-            }
-        },
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        forest: '#173c2e',
+        brand: { DEFAULT: '#176b52', dark: '#0f513f', soft: '#e5eee5' },
+        mint: { DEFAULT: '#d9e6d8', strong: '#bfd3c3' },
+        canvas: '#f3f4ef',
+        ink: { DEFAULT: '#18231d', soft: '#536158', faint: '#6b756c' },
+        line: { DEFAULT: '#dfe3da', strong: '#c8d0c7' },
+        warn: { DEFAULT: '#8a5a14', soft: '#faefd6' },
+        danger: { DEFAULT: '#a63d2d', soft: '#f9e3e0' },
+      },
+      fontFamily: {
+        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
+      },
+      boxShadow: { card: '0 1px 2px rgb(24 35 29 / 0.05)' },
     },
-    plugins: [
-        require('@tailwindcss/container-queries'),
-        require('@tailwindcss/forms'),
-    ],
+  },
+  plugins: [forms],
 }

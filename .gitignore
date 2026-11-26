@@ -1,1 +1,9 @@
 node_modules
+dist
+.env
+.env.*
+!.env.example
+apps/api/uploads/
+apps/api/test-out.txt
+apps/api/test-results*.txt
+backup-db-*.sql

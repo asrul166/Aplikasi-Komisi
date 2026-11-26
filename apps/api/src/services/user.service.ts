@@ -1,171 +1,81 @@
+import { and, asc, eq } from 'drizzle-orm';
+import { hashPassword } from 'better-auth/crypto';
 import { db } from '../db/index.js';
-import { user, workspaces } from '../db/schema/index.js';
-import { eq, and, count, sql, desc } from 'drizzle-orm';
-import { NotFoundError } from '../lib/errors.js';
-import { type PaginationParams, getOffset, paginate } from '../lib/pagination.js';
+import { account, session, user } from '../db/schema/index.js';
+import type { Role } from '../middleware/auth.middleware.js';
+import { BadRequestError, ConflictError, NotFoundError, pgErrorCode } from '../lib/errors.js';
 
-interface UpdateUserInput {
-  name?: string;
-  email?: string;
+const publicColumns = {
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  role: user.role,
+  jobTitle: user.jobTitle,
+  isActive: user.isActive,
+};
+
+export interface NewUser {
+  name: string;
+  email: string;
+  password: string;
+  role: Role;
   jobTitle?: string;
-  image?: string;
 }
 
 export const userService = {
-  async list(
-    workspaceId: string,
-    filters: { role?: string },
-    pagination: PaginationParams
-  ) {
-    const offset = getOffset(pagination);
-    const conditions = [eq(user.workspaceId, workspaceId)];
+  list(workspaceId: string) {
+    return db
+      .select(publicColumns)
+      .from(user)
+      .where(eq(user.workspaceId, workspaceId))
+      .orderBy(asc(user.name));
+  },
 
-    if (filters.role) {
-      conditions.push(eq(user.role, filters.role as any));
+  /** Public sign-up is disabled, so the credential account is written here. */
+  async create(input: NewUser, workspaceId: string) {
+    const id = crypto.randomUUID();
+    const password = await hashPassword(input.password);
+    try {
+      await db.transaction(async (tx) => {
+        await tx.insert(user).values({
+          id,
+          workspaceId,
+          name: input.name,
+          email: input.email.toLowerCase(),
+          role: input.role,
+          jobTitle: input.jobTitle,
+        });
+        await tx.insert(account).values({
+          id: crypto.randomUUID(),
+          accountId: id,
+          providerId: 'credential',
+          userId: id,
+          password,
+        });
+      });
+    } catch (err) {
+      if (pgErrorCode(err) === '23505') throw new ConflictError('Email sudah terdaftar');
+      throw err;
     }
-
-    const where = and(...conditions);
-
-    const [totalResult] = await db
-      .select({ count: count() })
-      .from(user)
-      .where(where);
-
-    const data = await db
-      .select({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        jobTitle: user.jobTitle,
-        isActive: user.isActive,
-        image: user.image,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      })
-      .from(user)
-      .where(where)
-      .orderBy(desc(user.createdAt))
-      .limit(pagination.limit)
-      .offset(offset);
-
-    return paginate(data, totalResult.count, pagination);
+    return id;
   },
 
-  async getById(id: string) {
-    const [found] = await db
-      .select({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        jobTitle: user.jobTitle,
-        isActive: user.isActive,
-        image: user.image,
-        workspaceId: user.workspaceId,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      })
-      .from(user)
-      .where(eq(user.id, id));
-
-    if (!found) throw new NotFoundError('User', id);
-    return found;
-  },
-
-  async update(id: string, input: UpdateUserInput) {
-    await this.getById(id);
-
+  async update(
+    id: string,
+    input: { name?: string; jobTitle?: string; role?: Role; isActive?: boolean },
+    workspaceId: string,
+    actorId: string
+  ) {
+    if (id === actorId && (input.isActive === false || (input.role && input.role !== 'admin'))) {
+      throw new BadRequestError('Anda tidak bisa menonaktifkan atau menurunkan peran akun sendiri');
+    }
     const [updated] = await db
       .update(user)
-      .set({
-        ...(input.name && { name: input.name }),
-        ...(input.email && { email: input.email }),
-        ...(input.jobTitle !== undefined && { jobTitle: input.jobTitle }),
-        ...(input.image !== undefined && { image: input.image }),
-        updatedAt: new Date(),
-      })
-      .where(eq(user.id, id))
-      .returning();
-
+      .set({ ...input, updatedAt: new Date() })
+      .where(and(eq(user.id, id), eq(user.workspaceId, workspaceId)))
+      .returning(publicColumns);
+    if (!updated) throw new NotFoundError('Pengguna');
+    if (input.isActive === false) await db.delete(session).where(eq(session.userId, id));
     return updated;
-  },
-
-  async updateRole(id: string, role: 'admin' | 'manager' | 'sales') {
-    await this.getById(id);
-
-    const [updated] = await db
-      .update(user)
-      .set({ role, updatedAt: new Date() })
-      .where(eq(user.id, id))
-      .returning();
-
-    return updated;
-  },
-
-  async toggleActive(id: string, isActive: boolean) {
-    await this.getById(id);
-
-    const [updated] = await db
-      .update(user)
-      .set({ isActive, updatedAt: new Date() })
-      .where(eq(user.id, id))
-      .returning();
-
-    return updated;
-  },
-
-  /**
-   * Invite a new user (scaffold — creates user record, in production would send email).
-   */
-  async invite(input: {
-    name: string;
-    email: string;
-    role: 'admin' | 'manager' | 'sales';
-    workspaceId: string;
-  }) {
-    const [newUser] = await db
-      .insert(user)
-      .values({
-        id: crypto.randomUUID(),
-        name: input.name,
-        email: input.email,
-        role: input.role,
-        workspaceId: input.workspaceId,
-        isActive: true,
-      })
-      .returning();
-
-    // TODO: Send invite email via email service
-    console.log(`[EMAIL STUB] Invite sent to ${input.email}`);
-
-    return newUser;
-  },
-
-  async getStats(workspaceId: string) {
-    const [totalResult] = await db
-      .select({ count: count() })
-      .from(user)
-      .where(eq(user.workspaceId, workspaceId));
-
-    const [activeResult] = await db
-      .select({ count: count() })
-      .from(user)
-      .where(
-        and(eq(user.workspaceId, workspaceId), eq(user.isActive, true))
-      );
-
-    // Get workspace max seats
-    const [workspace] = await db
-      .select({ maxSeats: workspaces.maxSeats })
-      .from(workspaces)
-      .where(eq(workspaces.id, workspaceId));
-
-    return {
-      totalUsers: totalResult.count,
-      maxSeats: workspace?.maxSeats ?? 50,
-      activeUsers: activeResult.count,
-      pendingInvites: 0, // TODO: Track pending invites separately
-    };
   },
 };

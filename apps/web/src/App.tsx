@@ -1,61 +1,43 @@
-import { useState } from 'react'
-import Sidebar from './components/Sidebar.tsx'
-import TopNavBar from './components/TopNavBar.tsx'
-import Reporting from './components/Reporting'
-import Dashboard from './components/Dashboard'
-import Transactions from './components/Transactions'
-import Login from './components/Login'
-import NewCommissionRule from './components/NewCommissionRule'
-import Settings from './components/Settings'
-import MarketData from './components/MarketData'
-import Execution from './components/Execution'
-import AIAssistantOverlay from './components/AIAssistantOverlay'
+import type { ComponentType } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Layout } from './components/Layout'
+import { State } from './components/ui'
+import { useAuth } from './lib/auth'
+import { NAV } from './lib/nav'
+import Approvals from './pages/Approvals'
+import Dashboard from './pages/Dashboard'
+import Login from './pages/Login'
+import Reports from './pages/Reports'
+import Rules from './pages/Rules'
+import Settings from './pages/Settings'
+import Team from './pages/Team'
+import Transactions from './pages/Transactions'
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [activeTab, setActiveTab] = useState('transactions')
-  const [isAIOpen, setIsAIOpen] = useState(false)
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab)
-    setIsMobileNavOpen(false)
-  }
-
-  if (!isAuthenticated) {
-    return <Login onLogin={() => setIsAuthenticated(true)} />
-  }
-
-  return (
-    <>
-      {/* SideNavBar Shell */}
-      <Sidebar
-        activeTab={activeTab}
-        isMobileOpen={isMobileNavOpen}
-        onClose={() => setIsMobileNavOpen(false)}
-        onTabChange={handleTabChange}
-      />
-      
-      {/* Main Canvas */}
-      <main className="min-h-screen md:ml-64">
-        <TopNavBar 
-          activeTab={activeTab} 
-          onToggleMobileNav={() => setIsMobileNavOpen((isOpen) => !isOpen)}
-          onToggleAI={() => setIsAIOpen(!isAIOpen)} 
-        />
-        {activeTab === 'dashboard' && <Dashboard />}
-        {activeTab === 'transactions' && <Transactions />}
-        {activeTab === 'reporting' && <Reporting />}
-        {activeTab === 'new-rule' && <NewCommissionRule />}
-        {activeTab === 'settings' && <Settings />}
-        {activeTab === 'market-data' && <MarketData />}
-        {activeTab === 'execution' && <Execution />}
-      </main>
-
-      <AIAssistantOverlay isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
-
-    </>
-  )
+const PAGES: Record<string, ComponentType> = {
+  '/': Dashboard,
+  '/transaksi': Transactions,
+  '/persetujuan': Approvals,
+  '/tim': Team,
+  '/aturan': Rules,
+  '/laporan': Reports,
+  '/pengaturan': Settings,
 }
 
-export default App
+export default function App() {
+  const { user, ready } = useAuth()
+
+  if (!ready) return <State loading />
+  if (!user) return <Login />
+
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        {NAV.filter((item) => item.roles.includes(user.role)).map(({ path }) => {
+          const Page = PAGES[path]
+          return <Route key={path} path={path} element={<Page />} />
+        })}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
+  )
+}

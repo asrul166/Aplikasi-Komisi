@@ -31,8 +31,8 @@ export function validate(schemas: ValidationSchemas) {
     } catch (err) {
       if (err instanceof ZodError) {
         res.status(400).json({
-          error: 'Validation failed',
-          details: err.errors.map((e) => ({
+          error: 'Data yang dikirim tidak valid',
+          details: err.issues.map((e) => ({
             path: e.path.join('.'),
             message: e.message,
           })),

@@ -1,57 +1,35 @@
 import { Router } from 'express';
+import { eq } from 'drizzle-orm';
+import { z } from 'zod';
 import { requireAuth, type AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/rbac.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
 import { auditLog } from '../middleware/audit.middleware.js';
-import { workspaceService } from '../services/workspace.service.js';
+import { db } from '../db/index.js';
+import { workspaces } from '../db/schema/index.js';
 
 const router = Router();
-
 router.use(requireAuth);
 
 router.get('/current', async (req: AuthenticatedRequest, res) => {
-  try {
-    if (!req.user!.workspaceId) {
-      res.status(404).json({ error: 'No workspace assigned' });
-      return;
-    }
-    const data = await workspaceService.getById(req.user!.workspaceId);
-    res.json(data);
-  } catch (err: any) {
-    res.status(err.statusCode ?? 500).json({ error: err.message });
-  }
+  const [workspace] = await db
+    .select({ id: workspaces.id, name: workspaces.name })
+    .from(workspaces)
+    .where(eq(workspaces.id, req.user!.workspaceId));
+  res.json(workspace);
 });
 
 router.put(
   '/current',
   requireRole('admin'),
+  validate({ body: z.object({ name: z.string().trim().min(1).max(255) }) }),
   auditLog('Updated Workspace Settings'),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await workspaceService.update(
-        req.user!.workspaceId!,
-        req.body
-      );
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
-  }
-);
-
-router.put(
-  '/ai-config',
-  requireRole('admin'),
-  auditLog('Updated AI Configuration'),
-  async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await workspaceService.updateAIConfig(
-        req.user!.workspaceId!,
-        req.body
-      );
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    await db
+      .update(workspaces)
+      .set({ name: req.body.name, updatedAt: new Date() })
+      .where(eq(workspaces.id, req.user!.workspaceId));
+    res.status(204).send();
   }
 );
 

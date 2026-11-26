@@ -1,5 +1,5 @@
 /**
- * AutoComm Commission Engine
+ * Komisia Commission Engine
  *
  * Implements the PRD combination model: flat commission + tiered bonus.
  * - Flat: A fixed percentage applied to the transaction's total sales.

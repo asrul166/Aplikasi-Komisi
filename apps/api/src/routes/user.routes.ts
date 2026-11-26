@@ -1,128 +1,71 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { requireAuth, type AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/rbac.middleware.js';
 import { validate } from '../middleware/validate.middleware.js';
 import { auditLog } from '../middleware/audit.middleware.js';
 import { userService } from '../services/user.service.js';
-import { paginationSchema } from '../lib/pagination.js';
-import { z } from 'zod';
 
 const router = Router();
-
 router.use(requireAuth);
 
-// ── Validation ─────────────────────────────────────────────────
+const name = z.string().trim().min(1, 'Wajib diisi').max(255);
+const jobTitle = z.string().trim().max(255);
+const role = z.enum(['admin', 'manager', 'sales']);
 
-const inviteSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  role: z.enum(['admin', 'manager', 'sales']),
+const createSchema = z.object({
+  name,
+  email: z.string().email('Email tidak valid'),
+  password: z.string().min(8, 'Password minimal 8 karakter').max(128),
+  role,
+  jobTitle: jobTitle.optional(),
 });
 
-// ── Routes ─────────────────────────────────────────────────────
+const updateSchema = z.object({
+  name: name.optional(),
+  jobTitle: jobTitle.optional(),
+  role: role.optional(),
+  isActive: z.boolean().optional(),
+});
 
-router.get(
-  '/',
-  requireRole('admin', 'manager'),
-  validate({ query: paginationSchema }),
+/** The signed-in user. */
+router.get('/me', (req: AuthenticatedRequest, res) => {
+  res.json(req.user);
+});
+
+router.patch(
+  '/me',
+  validate({ body: z.object({ name, jobTitle: jobTitle.optional() }) }),
+  auditLog('Updated Own Profile'),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const query = (req as any).validatedQuery;
-      const data = await userService.list(
-        req.user!.workspaceId!,
-        { role: req.query.role as string | undefined },
-        query
-      );
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    const { id, workspaceId } = req.user!;
+    res.json(await userService.update(id, req.body, workspaceId, id));
   }
 );
 
-router.get('/stats', requireRole('admin', 'manager'), async (req: AuthenticatedRequest, res) => {
-  try {
-    const data = await userService.getStats(req.user!.workspaceId!);
-    res.json(data);
-  } catch (err: any) {
-    res.status(err.statusCode ?? 500).json({ error: err.message });
-  }
-});
-
-router.get('/:id', async (req: AuthenticatedRequest, res) => {
-  try {
-    // Sales users can only view their own profile
-    if (req.user!.role === 'sales' && req.params.id !== req.user!.id) {
-      res.status(403).json({ error: 'Forbidden' });
-      return;
-    }
-    const data = await userService.getById(req.params.id as string);
-    res.json(data);
-  } catch (err: any) {
-    res.status(err.statusCode ?? 500).json({ error: err.message });
-  }
+router.get('/', requireRole('admin', 'manager'), async (req: AuthenticatedRequest, res) => {
+  res.json(await userService.list(req.user!.workspaceId));
 });
 
 router.post(
-  '/invite',
+  '/',
   requireRole('admin'),
-  validate({ body: inviteSchema }),
-  auditLog('Invited User', (req) => req.body.email),
+  validate({ body: createSchema }),
+  auditLog('Added User', (req) => req.body.email),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await userService.invite({
-        ...req.body,
-        workspaceId: req.user!.workspaceId!,
-      });
-      res.status(201).json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    const id = await userService.create(req.body, req.user!.workspaceId);
+    res.status(201).json({ id });
   }
 );
 
-router.put(
+router.patch(
   '/:id',
   requireRole('admin'),
-  auditLog('Updated User', (req) => req.params.id as string),
+  validate({ body: updateSchema }),
+  auditLog('Updated User'),
   async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await userService.update(req.params.id as string, req.body);
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
-  }
-);
-
-router.patch(
-  '/:id/role',
-  requireRole('admin'),
-  auditLog('Modified User Role', (req) => `User_${req.params.id}`),
-  async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await userService.updateRole(req.params.id as string, req.body.role);
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
-  }
-);
-
-router.patch(
-  '/:id/status',
-  requireRole('admin'),
-  auditLog('Toggled User Status', (req) => `User_${req.params.id}`),
-  async (req: AuthenticatedRequest, res) => {
-    try {
-      const data = await userService.toggleActive(
-        req.params.id as string,
-        req.body.isActive
-      );
-      res.json(data);
-    } catch (err: any) {
-      res.status(err.statusCode ?? 500).json({ error: err.message });
-    }
+    const id = String(req.params.id);
+    res.json(await userService.update(id, req.body, req.user!.workspaceId, req.user!.id));
   }
 );
 
